@@ -1,11 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@550&display=swap');
 
 /* Font adjustment */
-div, h1, h2, h3, h4, h5, h6, p {font-family: "Quicksand"; color: #1f274c;}
+div, h1, h2, h3, h4, h5, h6, p {font-family: "Quicksand";}
+/*.header-article-items {}*/
 
 /* Background colour adjustments for the page */
 body, .row, .dropdown-buttons {background-color: #fffbf2;}
-.bd-sidebar-primary {background-color: #fcc0a3;}
+.bd-header-article {background-color: #fffbf2; color: #1f274c;}
+.bd-sidebar-primary {background-color: #fcc0a3; color: #1f274c;}
 
 /* Change navigation menu items' colour */
 /* #site-navigation h1.site-logo, */
