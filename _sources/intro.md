@@ -1,16 +1,13 @@
-# Welcome to your Jupyter Book
+# Welcome to Code Walkthroughs
 
-This is a small sample book to give you a feel for how book content is
-structured.
+Code walkthroughs are a data product that helps technical people in the Computer Science field
+such as software engineers and data scientists
+1. Conduct experiments and
+2. Create reproducible research.
 
-:::{note}
-Here is a note!
-:::
+Everytime this Jupyter book is built (read 
+[here](https://ceethinwa.github.io/BTS-Continuous-Learning/initial_setup.html)
+to learn more), the Jupyter notebooks herein are run and rendered as static html pages.
 
-And here is a code block:
-
-```
-e = mc^2
-```
-
-Check out the content pages bundled with this sample book to see more.
+Live projects in this book include:
+1. [Kenyans in Print](./kenyans-in-print/kip-intro), a computer vision solution
