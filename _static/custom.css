@@ -5,14 +5,14 @@ div, h1, h2, h3, h4, h5, h6, p {font-family: "Quicksand";}
 
 /* Background colour adjustments for the page */
 body, .row, .dropdown-buttons {background-color: #fffbf2;}
-.bd-sidebar-primary {background-color: #fcc0a3;}
+.bd-sidebar-primary {background-color: #fcc0a3; color: #1f274c}
 
 /* Change navigation menu items' colour */
-#site-navigation h1.site-logo,
-#site-navigation nav ul.nav li a,
-#site-navigation div.navbar_extra_footer {
-    color: #1f274c;
-    }
+/* #site-navigation h1.site-logo, */
+/* #site-navigation nav ul.nav li a, */
+/* #site-navigation div.navbar_extra_footer { */
+/*     color: #1f274c; */
+/*     } */
 
 /* Change top bar icons' colour */
 #navbar-toggler {color: #1f274c;}
