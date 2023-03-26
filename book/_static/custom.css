@@ -2,17 +2,23 @@
 
 /* Font adjustment */
 div, h1, h2, h3, h4, h5, h6, p {font-family: "Quicksand";}
+/*.header-article-items {}*/
 
 /* Background colour adjustments for the page */
 body, .row, .dropdown-buttons {background-color: #fffbf2;}
-#site-navigation {background-color: #fcc0a3;}
+.bd-header-article {background-color: #fffbf2;}
+.bd-sidebar-primary {background-color: #fcc0a3;}
+
+
+/* Remove annoying halving of content space for subsequent pages after the introductory page*/
+/*#main-content {max-width:1000px !important; }*/
 
 /* Change navigation menu items' colour */
-#site-navigation h1.site-logo,
-#site-navigation nav ul.nav li a,
-#site-navigation div.navbar_extra_footer {
-    color: #1f274c;
-    }
+/* #site-navigation h1.site-logo, */
+/* #site-navigation nav ul.nav li a, */
+/* #site-navigation div.navbar_extra_footer { */
+/*     color: #1f274c; */
+/*     } */
 
 /* Change top bar icons' colour */
 #navbar-toggler {color: #1f274c;}
