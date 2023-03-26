@@ -1,4 +1,4 @@
-# Introduction
+# Kenyans in Print
 
  <video width="320" height="240" controls>
   <source src="https://ceethinwa.github.io/resources/vid/Kenyans%20in%20Print.mp4" type="video/mp4">
