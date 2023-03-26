@@ -6,8 +6,12 @@ div, h1, h2, h3, h4, h5, h6, p {font-family: "Quicksand";}
 
 /* Background colour adjustments for the page */
 body, .row, .dropdown-buttons {background-color: #fffbf2;}
-.bd-header-article {background-color: #fffbf2; color: #1f274c;}
-.bd-sidebar-primary {background-color: #fcc0a3; color: #1f274c;}
+.bd-header-article {background-color: #fffbf2;}
+.bd-sidebar-primary {background-color: #fcc0a3;}
+
+
+/* Remove annoying halving of content space for subsequent pages after the introductory page*/
+/*#main-content {max-width:1000px !important; }*/
 
 /* Change navigation menu items' colour */
 /* #site-navigation h1.site-logo, */
