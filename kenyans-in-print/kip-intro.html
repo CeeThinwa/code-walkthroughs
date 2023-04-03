@@ -66,6 +66,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Test" href="test.html" />
     <link rel="prev" title="Welcome to Code Walkthroughs" href="../intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -158,7 +159,10 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Kenyans in Print</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Kenyans in Print</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="test.html">Test</a></li>
+</ul>
+</li>
 </ul>
 
     </div>
@@ -282,7 +286,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -298,6 +304,17 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vision">Vision</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem">Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mission">Mission</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#potential-audience">Potential Audience</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -312,14 +329,33 @@ document.write(`
  <video width="100%" height="100%" controls>
   <source src="https://ceethinwa.github.io/resources/vid/Kenyans%20in%20Print.mp4" type="video/mp4">
   Your browser does not support the video tag.
-</video> </section>
+</video>
+<section id="vision">
+<h2>Vision<a class="headerlink" href="#vision" title="Permalink to this heading">#</a></h2>
+<p>To make news articles searchable and shine the spotlight on more human interest stories from interesting Kenyans from all walks of life.</p>
+</section>
+<section id="problem">
+<h2>Problem<a class="headerlink" href="#problem" title="Permalink to this heading">#</a></h2>
+<p>Diverse portraits of everyday Kenyans tend to be buried under the celebrity and influencer culture dominating Kenyan online blogs and Kenyan YouTube channels. However, print media in Kenya still has a good amount of human interest stories. However, these stories are shown as scanned flipbooks, which can be hard to search through. Having them in this format also means that you can’t cluster different articles around human interest topics like entrepreneurship, cuisine, family etc.</p>
+</section>
+<section id="mission">
+<h2>Mission<a class="headerlink" href="#mission" title="Permalink to this heading">#</a></h2>
+<p>Provide a solution from scanned newspaper articles that allows the most relevant human interest stories to be categorized by authors and human interest topics.</p>
+</section>
+<section id="potential-audience">
+<h2>Potential Audience<a class="headerlink" href="#potential-audience" title="Permalink to this heading">#</a></h2>
+<p>Writers working for Kenyan media houses.</p>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
 
     <script type="text/x-thebe-config">
     {
         requestKernel: true,
         binderOptions: {
-            repo: "binder-examples/jupyter-stacks-datascience",
-            ref: "master",
+            repo: "ceethinwa/code-walkthroughs",
+            ref: "main",
         },
         codeMirrorConfig: {
             theme: "abcdef",
@@ -351,12 +387,38 @@ document.write(`
         <p class="prev-next-title">Welcome to Code Walkthroughs</p>
       </div>
     </a>
+    <a class="right-next"
+       href="test.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Test</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vision">Vision</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem">Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mission">Mission</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#potential-audience">Potential Audience</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
