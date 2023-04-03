@@ -6,4 +6,4 @@ root: intro
 chapters:
 - file: kenyans-in-print/kip-intro
   sections:
-    - file: kenyans-in-print/test
+    - file: kenyans-in-print/kip-pg1
