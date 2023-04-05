@@ -386,14 +386,21 @@ You should consider upgrading via the &#39;C:\Users\CT\Documents\GitHub\code-wal
     <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;./kip-images/17_12_2021_Nation_MyNetWork_pg9.jpg&quot;</span><span class="p">)</span>
 <span class="k">except</span><span class="p">:</span>
     <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;/home/jovyan/book/kenyans-in-print/kip-images/17_12_2021_Nation_MyNetWork_pg9.jpg&quot;</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+<span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
+<span class="n">display</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
+    <span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/160d7d81a1412a615f3f28f0df56555eff189ce37bdd4ab0a520ebd6bfbada7a.png" src="../_images/160d7d81a1412a615f3f28f0df56555eff189ce37bdd4ab0a520ebd6bfbada7a.png" />
+<img alt="../_images/f7c2eab7af49608f1b3d7d0cef358c5dc0a56cf46795b2852e5861dcb8402994.png" src="../_images/f7c2eab7af49608f1b3d7d0cef358c5dc0a56cf46795b2852e5861dcb8402994.png" />
 </div>
 </div>
+<p>How can we “read” the article above in a programmatic way?</p>
+<p>We would need to isolate various elements in the photo like the title and captions, which are larger than the body text.</p>
+<p>Luckily, with AI and OCR technologies, we can do just that.</p>
 </section>
 
     <script type="text/x-thebe-config">
