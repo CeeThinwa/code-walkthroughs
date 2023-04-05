@@ -334,7 +334,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -350,6 +352,19 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#i-image-importation">I) Image importation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-use-of-the-height-heuristics-approach">II) Use of the height heuristics approach</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-one">Round One</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -362,11 +377,13 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="image-block-segmentation">
 <h1>Image block segmentation<a class="headerlink" href="#image-block-segmentation" title="Permalink to this heading">#</a></h1>
 <p>There are subcomponents in each print image, and the first task is to pick them out based on height.</p>
+<section id="i-image-importation">
+<h2>I) Image importation<a class="headerlink" href="#i-image-importation" title="Permalink to this heading">#</a></h2>
 <p>Let’s assume we want to break up the image below:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>Pillow
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pythonRLSA
 </pre></div>
 </div>
 </div>
@@ -374,8 +391,33 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: Pillow in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (9.5.0)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: You are using pip version 21.1.2; however, version 23.0.1 is available.
-You should consider upgrading via the &#39;C:\Users\CT\Documents\GitHub\code-walkthroughs\venv\Scripts\python.exe -m pip install --upgrade pip&#39; command.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pythonRLSA in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (1.0.0)
+Requirement already satisfied: numpy in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (from pythonRLSA) (1.21.6)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span> <span class="c1"># Pillow package</span>
+<span class="kn">import</span> <span class="nn">cv2</span> <span class="c1"># Open CV package</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> <span class="c1"># Numpy package</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">pythonRLSA</span> <span class="kn">import</span> <span class="n">rlsa</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="o">~</span>\<span class="n">AppData</span>\<span class="n">Local</span>\<span class="n">Temp</span>\<span class="n">ipykernel_14804</span>\<span class="mf">509999045.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span> <span class="c1"># Pillow package</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">cv2</span> <span class="c1"># Open CV package</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> <span class="c1"># Numpy package</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span> <span class="nn">math</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">pythonRLSA</span> <span class="kn">import</span> <span class="n">rlsa</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;cv2&#39;
 </pre></div>
 </div>
 </div>
@@ -387,6 +429,7 @@ You should consider upgrading via the &#39;C:\Users\CT\Documents\GitHub\code-wal
 <span class="k">except</span><span class="p">:</span>
     <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;/home/jovyan/book/kenyans-in-print/kip-images/17_12_2021_Nation_MyNetWork_pg9.jpg&quot;</span><span class="p">)</span>
 
+
 <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
 <span class="n">display</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
     <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
@@ -394,13 +437,69 @@ You should consider upgrading via the &#39;C:\Users\CT\Documents\GitHub\code-wal
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/f7c2eab7af49608f1b3d7d0cef358c5dc0a56cf46795b2852e5861dcb8402994.png" src="../_images/f7c2eab7af49608f1b3d7d0cef358c5dc0a56cf46795b2852e5861dcb8402994.png" />
-</div>
 </div>
 <p>How can we “read” the article above in a programmatic way?</p>
 <p>We would need to isolate various elements in the photo like the title and captions, which are larger than the body text.</p>
 <p>Luckily, with AI and OCR technologies, we can do just that.</p>
+<br>
+</section>
+<section id="ii-use-of-the-height-heuristics-approach">
+<h2>II) Use of the height heuristics approach<a class="headerlink" href="#ii-use-of-the-height-heuristics-approach" title="Permalink to this heading">#</a></h2>
+<p>Distinguishing between content elements vertically has 3 key steps:</p>
+<ul class="simple">
+<li><p>Convert image to grayscale image, then binary image</p></li>
+<li><p>Find contours based on binary grayscale</p></li>
+<li><p>Use height heuristics to get indivisual regions in the image taller than others.</p></li>
+</ul>
+<section id="round-one">
+<h3>Round One<a class="headerlink" href="#round-one" title="Permalink to this heading">#</a></h3>
+<p>👇🏾 Reading the image</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;./kip-images/17_12_2021_Nation_MyNetWork_pg9.jpg&quot;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;/home/jovyan/book/kenyans-in-print/kip-images/17_12_2021_Nation_MyNetWork_pg9.jpg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>👇🏾 Converting the image to grayscale</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>👇🏾 Converting the image to binary</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">thresh</span><span class="p">,</span> <span class="n">binary</span><span class="p">)</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY</span> <span class="o">|</span>
+                                 <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_OTSU</span><span class="p">)</span>
+
+<span class="n">im_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">binary</span><span class="p">)</span>
+
+<span class="c1"># CODE CHECK CELL</span>
+<span class="n">display</span><span class="p">(</span><span class="n">im_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
+    <span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://stackoverflow.com/questions/10262600/how-to-detect-region-of-large-of-white-pixels-using-opencv#10266717">https://stackoverflow.com/questions/10262600/how-to-detect-region-of-large-of-white-pixels-using-opencv#10266717</a></p>
+<p><a class="reference external" href="https://www.geeksforgeeks.org/python-pil-image-crop-method/">https://www.geeksforgeeks.org/python-pil-image-crop-method/</a></p>
+<p><a class="reference external" href="https://machinelearningknowledge.ai/how-to-scale-and-resize-image-in-python-with-opencv-cv2-resize/">https://machinelearningknowledge.ai/how-to-scale-and-resize-image-in-python-with-opencv-cv2-resize/</a></p>
+<p><a class="reference external" href="https://stackoverflow.com/questions/43232813/convert-opencv-image-format-to-pil-image-format#43234001">https://stackoverflow.com/questions/43232813/convert-opencv-image-format-to-pil-image-format#43234001</a></p>
+<p><a class="reference external" href="https://www.freedomvc.com/index.php/2021/06/26/contours-and-bounding-boxes/">https://www.freedomvc.com/index.php/2021/06/26/contours-and-bounding-boxes/</a></p>
+<p><a class="reference external" href="https://stackoverflow.com/questions/33299412/article-extraction-from-newspaper-image-in-python-and-opencv">https://stackoverflow.com/questions/33299412/article-extraction-from-newspaper-image-in-python-and-opencv</a></p>
+<p><a class="reference external" href="https://medium.com/&#64;vasista/extract-title-from-the-image-documents-in-python-application-of-rlsa-58f91237901f">https://medium.com/&#64;vasista/extract-title-from-the-image-documents-in-python-application-of-rlsa-58f91237901f</a></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -446,6 +545,25 @@ You should consider upgrading via the &#39;C:\Users\CT\Documents\GitHub\code-wal
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#i-image-importation">I) Image importation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-use-of-the-height-heuristics-approach">II) Use of the height heuristics approach</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-one">Round One</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
