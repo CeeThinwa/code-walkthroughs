@@ -383,7 +383,9 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>Pillow
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>numpy
 <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pythonRLSA
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>opencv-python-headless
 </pre></div>
 </div>
 </div>
@@ -391,8 +393,16 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: Pillow in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (9.5.0)
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (1.21.6)
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pythonRLSA in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (1.0.0)
 Requirement already satisfied: numpy in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (from pythonRLSA) (1.21.6)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting opencv-python-headless
+  Downloading opencv_python_headless-4.7.0.72-cp37-abi3-win_amd64.whl (38.1 MB)
+^C
 </pre></div>
 </div>
 </div>
@@ -410,14 +420,12 @@ Requirement already satisfied: numpy in c:\users\ct\documents\github\code-walkth
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="o">~</span>\<span class="n">AppData</span>\<span class="n">Local</span>\<span class="n">Temp</span>\<span class="n">ipykernel_14804</span>\<span class="mf">509999045.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span> <span class="c1"># Pillow package</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">cv2</span> <span class="c1"># Open CV package</span>
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="n">a6e427f6c3bd</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> <span class="c1"># Numpy package</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span> <span class="nn">math</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">pythonRLSA</span> <span class="kn">import</span> <span class="n">rlsa</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">pythonRLSA</span> <span class="kn">import</span> <span class="n">rlsa</span>
 
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;cv2&#39;
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;pythonRLSA&#39;
 </pre></div>
 </div>
 </div>
@@ -457,9 +465,9 @@ Requirement already satisfied: numpy in c:\users\ct\documents\github\code-walkth
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;./kip-images/17_12_2021_Nation_MyNetWork_pg9.jpg&quot;</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;./kip-images/17_12_2021_Nation_MyNetWork_pg9.jpg&quot;</span><span class="p">)</span>
 <span class="k">except</span><span class="p">:</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;/home/jovyan/book/kenyans-in-print/kip-images/17_12_2021_Nation_MyNetWork_pg9.jpg&quot;</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;/home/jovyan/book/kenyans-in-print/kip-images/17_12_2021_Nation_MyNetWork_pg9.jpg&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
