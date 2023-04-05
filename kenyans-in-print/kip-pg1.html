@@ -393,6 +393,9 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: Pillow in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (9.5.0)
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (1.21.6)
 </pre></div>
 </div>
@@ -433,9 +436,11 @@ Requirement already satisfied: numpy in c:\users\ct\documents\github\code-walkth
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;./kip-images/17_12_2021_Nation_MyNetWork_pg9.jpg&quot;</span><span class="p">)</span>
+    <span class="n">sample_image_path</span> <span class="o">=</span> <span class="s2">&quot;./kip-images/17_12_2021_Nation_MyNetWork_pg9.jpg&quot;</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)</span>
 <span class="k">except</span><span class="p">:</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;/home/jovyan/book/kenyans-in-print/kip-images/17_12_2021_Nation_MyNetWork_pg9.jpg&quot;</span><span class="p">)</span>
+    <span class="n">sample_image_path</span> <span class="o">=</span> <span class="s2">&quot;/home/jovyan/book/kenyans-in-print/kip-images/17_12_2021_Nation_MyNetWork_pg9.jpg&quot;</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)</span>
 
 
 <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
@@ -444,6 +449,9 @@ Requirement already satisfied: numpy in c:\users\ct\documents\github\code-walkth
     <span class="p">))</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f7c2eab7af49608f1b3d7d0cef358c5dc0a56cf46795b2852e5861dcb8402994.png" src="../_images/f7c2eab7af49608f1b3d7d0cef358c5dc0a56cf46795b2852e5861dcb8402994.png" />
 </div>
 </div>
 <p>How can we “read” the article above in a programmatic way?</p>
