@@ -400,12 +400,8 @@ document.write(`
 Requirement already satisfied: numpy in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (from pythonRLSA) (1.21.6)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting opencv-python-headless
-  Downloading opencv_python_headless-4.7.0.72-cp37-abi3-win_amd64.whl (38.1 MB)
-     ---------------------------------------- 38.1/38.1 MB 2.2 MB/s eta 0:00:00
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: opencv-python-headless in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (4.7.0.72)
 Requirement already satisfied: numpy&gt;=1.17.0 in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (from opencv-python-headless) (1.21.6)
-Installing collected packages: opencv-python-headless
-Successfully installed opencv-python-headless-4.7.0.72
 </pre></div>
 </div>
 </div>
@@ -481,7 +477,6 @@ Successfully installed opencv-python-headless-4.7.0.72
 
 <span class="n">im_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">binary</span><span class="p">)</span>
 
-<span class="c1"># CODE CHECK CELL</span>
 <span class="n">display</span><span class="p">(</span><span class="n">im_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
     <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
     <span class="p">))</span>
@@ -490,6 +485,37 @@ Successfully installed opencv-python-headless-4.7.0.72
 </div>
 <div class="cell_output docutils container">
 <img alt="../_images/d3d976f503b94cca425f074cc468b52e30e49810785847481bbfee606920144f.png" src="../_images/d3d976f503b94cca425f074cc468b52e30e49810785847481bbfee606920144f.png" />
+</div>
+</div>
+<p>👇🏾 Identify contours and put bounding boxes around each letter or symbol</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">contours</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span><span class="o">~</span><span class="n">binary</span><span class="p">,</span><span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span><span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_SIMPLE</span><span class="p">)</span> 
+
+<span class="k">for</span> <span class="n">contour</span> <span class="ow">in</span> <span class="n">contours</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    draw a rectangle around those contours on main image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">(</span><span class="n">contour</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">,</span><span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+<span class="n">im_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+<span class="c1"># CODE CHECK CELL</span>
+<span class="n">display</span><span class="p">(</span><span class="n">im_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
+    <span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c355ec522fb73fd872c50f6f7a9ddde256838f2c2e7efb72407c838fccc89869.png" src="../_images/c355ec522fb73fd872c50f6f7a9ddde256838f2c2e7efb72407c838fccc89869.png" />
 </div>
 </div>
 </section>
