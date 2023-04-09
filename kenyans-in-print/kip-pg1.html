@@ -518,6 +518,97 @@ Requirement already satisfied: numpy&gt;=1.17.0 in c:\users\ct\documents\github\
 <img alt="../_images/c355ec522fb73fd872c50f6f7a9ddde256838f2c2e7efb72407c838fccc89869.png" src="../_images/c355ec522fb73fd872c50f6f7a9ddde256838f2c2e7efb72407c838fccc89869.png" />
 </div>
 </div>
+<p>👇🏾 Create the mask (a silhouette of the image, just an outline with no detail)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span> <span class="c1"># create blank image of same dimension of the original image</span>
+
+<span class="n">heights</span> <span class="o">=</span> <span class="p">[</span><span class="n">cv2</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">(</span><span class="n">contour</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">contour</span> <span class="ow">in</span> <span class="n">contours</span><span class="p">]</span> <span class="c1"># collecting heights of each contour</span>
+
+<span class="n">avgheight</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">heights</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">heights</span><span class="p">)</span> <span class="c1"># average height</span>
+
+<span class="c1"># finding the larger contours</span>
+<span class="c1"># Applying Height heuristic</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">contours</span><span class="p">:</span>
+    <span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">h</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">*</span><span class="n">avgheight</span><span class="p">:</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">drawContours</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+
+<span class="c1"># CODE CHECK CELL</span>
+<span class="n">display</span><span class="p">(</span><span class="n">im_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
+    <span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5f877e199f4f50cc76cd684bece132079c6ff2cd0d3bf731907b6dc3bb18bb38.png" src="../_images/5f877e199f4f50cc76cd684bece132079c6ff2cd0d3bf731907b6dc3bb18bb38.png" />
+</div>
+</div>
+<p>👇🏾 Use height heuristics to separate the tallest item in the image (the “title” according to the computer) from the second-tallest item in the image (the “content” according to the computer)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">shape</span>
+
+<span class="n">value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="mi">100</span><span class="p">),</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="mi">100</span><span class="p">))</span><span class="o">+</span><span class="mi">20</span> <span class="c1">#heuristic</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">rlsa</span><span class="o">.</span><span class="n">rlsa</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="c1">#rlsa application with rlsa vertical - &quot;reads&quot; the content top to bottom</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">contours</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span><span class="o">~</span><span class="n">mask</span><span class="p">,</span><span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span><span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_SIMPLE</span><span class="p">)</span> <span class="c1"># find contours</span>
+
+<span class="n">mask2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span> <span class="c1"># blank 3 layer image</span>
+
+<span class="k">for</span> <span class="n">contour</span> <span class="ow">in</span> <span class="n">contours</span><span class="p">:</span>
+    <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">(</span><span class="n">contour</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="mf">0.60</span><span class="o">*</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="c1"># width heuristic applied</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">]</span> 
+        <span class="n">mask2</span><span class="p">[</span><span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span> <span class="c1"># copied title contour onto the blank image</span>
+        <span class="n">image</span><span class="p">[</span><span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span> <span class="c1"># nullified the title contour on original image</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">title_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">mask2</span><span class="p">)</span>  <span class="c1"># The &quot;title&quot; according to the computer</span>
+
+<span class="c1"># CODE CHECK CELL</span>
+<span class="n">display</span><span class="p">(</span><span class="n">title_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
+    <span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/80670d601e29088fdd998e765d3c026ad3ef7a0fcf2af152f837d22c8e2c2eca.png" src="../_images/80670d601e29088fdd998e765d3c026ad3ef7a0fcf2af152f837d22c8e2c2eca.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">content_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>  <span class="c1"># The &quot;content&quot; according to the computer</span>
+
+<span class="c1"># CODE CHECK CELL</span>
+<span class="n">display</span><span class="p">(</span><span class="n">content_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
+    <span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/43a08f30b121989dec17f4d3859eb2df3fa85d9beaa180f330a582324e51fa57.png" src="../_images/43a08f30b121989dec17f4d3859eb2df3fa85d9beaa180f330a582324e51fa57.png" />
+</div>
+</div>
 </section>
 </section>
 <section id="references">
