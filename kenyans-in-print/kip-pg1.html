@@ -361,9 +361,10 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#i-image-importation">I) Image importation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-use-of-the-height-heuristics-approach">II) Use of the height heuristics approach</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-one">Round One</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-would-happen-if-we-took-the-content-image-and-split-it-up-further">What would happen if we took the “content” image and split it up further?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-use-of-height-heuristics-is-helpful-but-not-effective-on-its-own-in-identifying-regions-of-text">Conclusion: Use of height heuristics is helpful, but not effective on its own in identifying regions of text.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-one">Round One</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-use-of-height-heuristics-is-helpful-but-not-effective-on-its-own-in-identifying-regions-of-text">Conclusion: Use of height heuristics is helpful, but not effective on its own in identifying regions of text.</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
@@ -613,174 +614,47 @@ Requirement already satisfied: numpy&gt;=1.17.0 in c:\users\ct\documents\github\
 <img alt="../_images/43a08f30b121989dec17f4d3859eb2df3fa85d9beaa180f330a582324e51fa57.png" src="../_images/43a08f30b121989dec17f4d3859eb2df3fa85d9beaa180f330a582324e51fa57.png" />
 </div>
 </div>
-</section>
-<section id="what-would-happen-if-we-took-the-content-image-and-split-it-up-further">
-<h3>What would happen if we took the “content” image and split it up further?<a class="headerlink" href="#what-would-happen-if-we-took-the-content-image-and-split-it-up-further" title="Permalink to this heading">#</a></h3>
-<p>👇🏾 Reading the image</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">content_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
-    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
-    <span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/43a08f30b121989dec17f4d3859eb2df3fa85d9beaa180f330a582324e51fa57.png" src="../_images/43a08f30b121989dec17f4d3859eb2df3fa85d9beaa180f330a582324e51fa57.png" />
-</div>
-</div>
-<p>👇🏾 Converting the image to grayscale</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>👇🏾 Converting the image to binary</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">thresh</span><span class="p">,</span> <span class="n">binary</span><span class="p">)</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY</span> <span class="o">|</span>
-                                 <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_OTSU</span><span class="p">)</span>
-
-<span class="n">im_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">binary</span><span class="p">)</span>
-
-<span class="n">display</span><span class="p">(</span><span class="n">im_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
-    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
-    <span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/dce14e9f09fe66bb8981e3193763ed082b8e4d654912e9f1080f32474b11b917.png" src="../_images/dce14e9f09fe66bb8981e3193763ed082b8e4d654912e9f1080f32474b11b917.png" />
-</div>
-</div>
-<p>👇🏾 Identify contours and put bounding boxes around each letter or symbol</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">contours</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span><span class="o">~</span><span class="n">binary</span><span class="p">,</span><span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span><span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_SIMPLE</span><span class="p">)</span> 
-
-<span class="k">for</span> <span class="n">contour</span> <span class="ow">in</span> <span class="n">contours</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    draw a rectangle around those contours on main image</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">(</span><span class="n">contour</span><span class="p">)</span>
-    <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">,</span><span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
-<span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
-<span class="n">im_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-
-<span class="c1"># CODE CHECK CELL</span>
-<span class="n">display</span><span class="p">(</span><span class="n">im_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
-    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
-    <span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/8fea038989580b24078436541e8ac90080f38ee484901addcf7d39806a5d2039.png" src="../_images/8fea038989580b24078436541e8ac90080f38ee484901addcf7d39806a5d2039.png" />
-</div>
-</div>
-<p>👇🏾 Create the mask (a silhouette of the image, just an outline with no detail)</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span> <span class="c1"># create blank image of same dimension of the original image</span>
-
-<span class="n">heights</span> <span class="o">=</span> <span class="p">[</span><span class="n">cv2</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">(</span><span class="n">contour</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">contour</span> <span class="ow">in</span> <span class="n">contours</span><span class="p">]</span> <span class="c1"># collecting heights of each contour</span>
-
-<span class="n">avgheight</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">heights</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">heights</span><span class="p">)</span> <span class="c1"># average height</span>
-
-<span class="c1"># finding the larger contours</span>
-<span class="c1"># Applying Height heuristic</span>
-<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">contours</span><span class="p">:</span>
-    <span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">h</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">*</span><span class="n">avgheight</span><span class="p">:</span>
-        <span class="n">cv2</span><span class="o">.</span><span class="n">drawContours</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
-
-<span class="c1"># CODE CHECK CELL</span>
-<span class="n">display</span><span class="p">(</span><span class="n">im_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
-    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
-    <span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/730dd3fc0faa19897271a88b6ca349a82acac93a9a4367a21feecf7c168b83c7.png" src="../_images/730dd3fc0faa19897271a88b6ca349a82acac93a9a4367a21feecf7c168b83c7.png" />
-</div>
-</div>
-<p>👇🏾 Use height heuristics to separate the tallest item in the image (the “title” according to the computer) from the second-tallest item in the image (the “content” according to the computer)</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">shape</span>
-
-<span class="n">value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="mi">100</span><span class="p">),</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="mi">100</span><span class="p">))</span><span class="o">+</span><span class="mi">20</span> <span class="c1">#heuristic</span>
-<span class="n">mask</span> <span class="o">=</span> <span class="n">rlsa</span><span class="o">.</span><span class="n">rlsa</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="c1">#rlsa application with rlsa vertical - &quot;reads&quot; the content top to bottom</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">contours</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span><span class="o">~</span><span class="n">mask</span><span class="p">,</span><span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span><span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_SIMPLE</span><span class="p">)</span> <span class="c1"># find contours</span>
-
-<span class="n">mask2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span> <span class="c1"># blank 3 layer image</span>
-
-<span class="k">for</span> <span class="n">contour</span> <span class="ow">in</span> <span class="n">contours</span><span class="p">:</span>
-    <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">(</span><span class="n">contour</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="mf">0.60</span><span class="o">*</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="c1"># width heuristic applied</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">]</span> 
-        <span class="n">mask2</span><span class="p">[</span><span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span> <span class="c1"># copied title contour onto the blank image</span>
-        <span class="n">image</span><span class="p">[</span><span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span> <span class="c1"># nullified the title contour on original image</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">title_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">mask2</span><span class="p">)</span>  <span class="c1"># The &quot;title&quot; according to the computer</span>
-
-<span class="c1"># CODE CHECK CELL</span>
-<span class="n">display</span><span class="p">(</span><span class="n">title_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
-    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
-    <span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/6e0d75a4f5445928cc37ff7893d26e86816448dd8f7198b60fd9d6a6a524244a.png" src="../_images/6e0d75a4f5445928cc37ff7893d26e86816448dd8f7198b60fd9d6a6a524244a.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">content_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>  <span class="c1"># The &quot;content&quot; according to the computer</span>
-
-<span class="c1"># CODE CHECK CELL</span>
-<span class="n">display</span><span class="p">(</span><span class="n">content_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
-    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
-    <span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/124285983a59faa8b8b25c888c4d024af1ee537595019c7e0f52efd380fc43ae.png" src="../_images/124285983a59faa8b8b25c888c4d024af1ee537595019c7e0f52efd380fc43ae.png" />
-</div>
-</div>
-</section>
 <section id="conclusion-use-of-height-heuristics-is-helpful-but-not-effective-on-its-own-in-identifying-regions-of-text">
-<h3>Conclusion: Use of height heuristics is helpful, but not effective on its own in identifying regions of text.<a class="headerlink" href="#conclusion-use-of-height-heuristics-is-helpful-but-not-effective-on-its-own-in-identifying-regions-of-text" title="Permalink to this heading">#</a></h3>
+<h4>Conclusion: Use of height heuristics is helpful, but not effective on its own in identifying regions of text.<a class="headerlink" href="#conclusion-use-of-height-heuristics-is-helpful-but-not-effective-on-its-own-in-identifying-regions-of-text" title="Permalink to this heading">#</a></h4>
+<p>👇🏾 Use identified coordinates to crop out the “title” and “content” sections of the original image</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">original</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)</span>
+<span class="n">original</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tall_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">original</span><span class="p">[</span><span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">])</span>
+<span class="n">display</span><span class="p">(</span><span class="n">tall_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">tall_pil</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">tall_pil</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
+    <span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5a2eae6fd04922a7a43ea3d6f26d516c1e0bd76a881bde0e0b3b3753be9f94bb.png" src="../_images/5a2eae6fd04922a7a43ea3d6f26d516c1e0bd76a881bde0e0b3b3753be9f94bb.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">original</span><span class="p">[</span><span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
+
+<span class="n">short_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">original</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">short_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">short_pil</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">short_pil</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
+    <span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/002b05b08b8f52a007cc4a2d2884e772e9396a6d82a02d0dfdbb841955b033e8.png" src="../_images/002b05b08b8f52a007cc4a2d2884e772e9396a6d82a02d0dfdbb841955b033e8.png" />
+</div>
+</div>
+</section>
 </section>
 </section>
 <section id="references">
@@ -858,9 +732,10 @@ Requirement already satisfied: numpy&gt;=1.17.0 in c:\users\ct\documents\github\
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#i-image-importation">I) Image importation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-use-of-the-height-heuristics-approach">II) Use of the height heuristics approach</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-one">Round One</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-would-happen-if-we-took-the-content-image-and-split-it-up-further">What would happen if we took the “content” image and split it up further?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-use-of-height-heuristics-is-helpful-but-not-effective-on-its-own-in-identifying-regions-of-text">Conclusion: Use of height heuristics is helpful, but not effective on its own in identifying regions of text.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-one">Round One</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-use-of-height-heuristics-is-helpful-but-not-effective-on-its-own-in-identifying-regions-of-text">Conclusion: Use of height heuristics is helpful, but not effective on its own in identifying regions of text.</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
