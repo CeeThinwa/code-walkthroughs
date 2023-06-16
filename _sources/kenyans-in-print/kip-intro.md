@@ -19,4 +19,17 @@ Provide a solution from scanned newspaper articles that allows the most relevant
 
 ## Potential Audience
 
-Writers working for Kenyan media houses.
+* Writers working for Kenyan media houses.
+* Curious Kenyans seeking to learn about other Kenyans. 
+
+## Project Sections
+
+1. **Image Annotation**<br>
+This project began with looking at the scanned images (which passed through a max A3 printer).
+Image segmentation was tackled in 2 parts:<br>
+   i. &nbsp;&nbsp; [Image Annotation I](./kip-pg1.ipynb)<br>
+   ii. &nbsp; [Image Annotation II](./kip-pg2.ipynb)<br>
+Ultimately, a manual approach will be taken based on the findings from my image annotation research.
+2. **Text Recognition**
+3. **Article Searchability**
+4. **Front-end Development**
