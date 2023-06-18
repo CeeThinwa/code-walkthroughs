@@ -1,4 +1,15 @@
 Traceback (most recent call last):
+  File "c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages\nbclient\client.py", line 730, in _async_poll_for_reply
+    msg = await ensure_async(self.kc.shell_channel.get_msg(timeout=new_timeout))
+  File "c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages\nbclient\util.py", line 96, in ensure_async
+    result = await obj
+  File "c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages\jupyter_client\channels.py", line 230, in get_msg
+    raise Empty
+_queue.Empty
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
   File "c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages\jupyter_cache\executors\utils.py", line 64, in single_nb_execution
     **kwargs,
   File "c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages\nbclient\client.py", line 1204, in execute
@@ -11,29 +22,24 @@ Traceback (most recent call last):
     return future.result()
   File "c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages\nbclient\client.py", line 664, in async_execute
     cell, index, execution_count=self.code_cells_executed + 1
-  File "c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages\nbclient\client.py", line 965, in async_execute_cell
-    await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages\nbclient\client.py", line 862, in _check_raise_for_error
-    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
-nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
-------------------
-from PIL import Image # Pillow package
-import cv2 # Open CV package
-import pandas as pd # Pandas package
-import numpy as np # Numpy package
-import math
-from collections import defaultdict # "reading" lines of the bounding boxes
-------------------
-
-[1;31m---------------------------------------------------------------------------[0m
-[1;31mModuleNotFoundError[0m                       Traceback (most recent call last)
-[1;32m~\AppData\Local\Temp\ipykernel_10948\2574506026.py[0m in [0;36m<module>[1;34m[0m
-[0;32m      1[0m [1;32mfrom[0m [0mPIL[0m [1;32mimport[0m [0mImage[0m [1;31m# Pillow package[0m[1;33m[0m[1;33m[0m[0m
-[0;32m      2[0m [1;32mimport[0m [0mcv2[0m [1;31m# Open CV package[0m[1;33m[0m[1;33m[0m[0m
-[1;32m----> 3[1;33m [1;32mimport[0m [0mpandas[0m [1;32mas[0m [0mpd[0m [1;31m# Pandas package[0m[1;33m[0m[1;33m[0m[0m
-[0m[0;32m      4[0m [1;32mimport[0m [0mnumpy[0m [1;32mas[0m [0mnp[0m [1;31m# Numpy package[0m[1;33m[0m[1;33m[0m[0m
-[0;32m      5[0m [1;32mimport[0m [0mmath[0m[1;33m[0m[1;33m[0m[0m
-
-[1;31mModuleNotFoundError[0m: No module named 'pandas'
-ModuleNotFoundError: No module named 'pandas'
+  File "c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages\nbclient\client.py", line 949, in async_execute_cell
+    exec_reply = await self.task_poll_for_reply
+  File "c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages\nbclient\client.py", line 754, in _async_poll_for_reply
+    await self._async_handle_timeout(timeout, cell)
+  File "c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages\nbclient\client.py", line 802, in _async_handle_timeout
+    "Cell execution timed out", timeout, cell
+nbclient.exceptions.CellTimeoutError: A cell timed out while it was being executed, after 30 seconds.
+The message was: Cell execution timed out.
+Here is a preview of the cell contents:
+-------------------
+verticals = []
+for i in range(500):# of 3504
+    if pd.DataFrame(cv2.imread(sample_image_path)[i])[
+        ((pd.DataFrame(cv2.imread(sample_image_path)[i])[2] == 0) & (pd.DataFrame(cv2.imread(sample_image_path)[i])[1] == 232) & (pd.DataFrame(cv2.imread(sample_image_path)[i])[0] == 72))
+    ].shape[0] > 0:
+        verticals.append(i)
+        print(f"Slice no. {i}")
+        display(pd.DataFrame(cv2.imread(sample_image_path)[i])[pd.DataFrame(cv2.imread(sample_image_path)[i])[2] == 0])
+        print("\n")
+-------------------
 

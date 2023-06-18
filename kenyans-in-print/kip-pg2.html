@@ -382,7 +382,7 @@ document.write(`
 <h1>Image block segmentation: Part II<a class="headerlink" href="#image-block-segmentation-part-ii" title="Permalink to this heading">#</a></h1>
 <section id="recap">
 <h2>Recap<a class="headerlink" href="#recap" title="Permalink to this heading">#</a></h2>
-<p>In the previous section, we were researching how to answer the following questions?</p>
+<p>In the previous section, we were researching how to answer the following questions:</p>
 <ul class="simple">
 <li><p><em>How can we “read” the article above in a programmatic way?</em></p></li>
 <li><p><em>We would need to isolate various elements in the photo like the title and captions, which are larger than the body text.</em></p></li>
@@ -419,8 +419,6 @@ Requirement already satisfied: numpy&gt;=1.17.0 in c:\users\ct\documents\github\
 <span class="kn">import</span> <span class="nn">cv2</span> <span class="c1"># Open CV package</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> <span class="c1"># Pandas package</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> <span class="c1"># Numpy package</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span> <span class="c1"># &quot;reading&quot; lines of the bounding boxes</span>
 </pre></div>
 </div>
 </div>
@@ -1657,10 +1655,10 @@ Requirement already satisfied: numpy&gt;=1.17.0 in c:\users\ct\documents\github\
 <p>2544 rows × 3 columns</p>
 </div></div></div>
 </div>
-<p><strong>THIS SOMEHOW WORKED, GIVING VALUES FROM THE 2ND DIMENSION AND GAVE HORIZONTAL VALUES</strong></p>
+<p>It therefore follows that we would need to find the “slices” that have this unique combination of the values of interest i.e. <code class="docutils literal notranslate"><span class="pre">(0,232,72)</span></code>, like the “slice” at index 0:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">])[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="c1"># original size = 2544 rows × 3 columns</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">])[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1760,7 +1758,7 @@ Requirement already satisfied: numpy&gt;=1.17.0 in c:\users\ct\documents\github\
 <p>2330 rows × 3 columns</p>
 </div></div></div>
 </div>
-<p>Key assumptions are:</p>
+<p>For this particular “slice”, key assumptions are:</p>
 <ul class="simple">
 <li><p>Horizontal lines would share an identical <span class="math notranslate nohighlight">\(x\)</span> value and have <span class="math notranslate nohighlight">\(y\)</span> values that follow an unbroken sequence</p></li>
 <li><p>Vertical lines would share an identical <span class="math notranslate nohighlight">\(y\)</span> value and have <span class="math notranslate nohighlight">\(x\)</span> values that follow an unbroken sequence</p></li>
@@ -1959,20 +1957,517 @@ True
 </div>
 </div>
 </div>
-<p>As shown above, 1 break was detected in the green horizontal line, leading me to believe these are the horizontal lines for the 1st 2 large blocks of the image, shown below:</p>
+<p>As shown above, 1 break was detected in the green horizontal line, leading me to believe these are the horizontal lines at position 0 on the vertical axis, shown below:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)</span>
 <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
 
-<span class="n">cropped</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3504</span><span class="p">,</span><span class="mi">153</span><span class="p">:</span><span class="mi">2510</span><span class="p">])</span> 
+<span class="n">cropped</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="mi">153</span><span class="p">:</span><span class="mi">2510</span><span class="p">])</span> 
 
 <span class="n">display</span><span class="p">(</span><span class="n">cropped</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2d1d19049a7bf1910e0d3f1cb75f39d86abb51ccd511c58e0b8d3c96466e6c33.png" src="../_images/2d1d19049a7bf1910e0d3f1cb75f39d86abb51ccd511c58e0b8d3c96466e6c33.png" />
+<img alt="../_images/91e7c719bba83018346ba812577669538a97abc67882017ee6391d123913b5fe.png" src="../_images/91e7c719bba83018346ba812577669538a97abc67882017ee6391d123913b5fe.png" />
+</div>
+</div>
+<p>Based on this finding, we need to find “slices” that have traces of the colour to know the stopping points on the “y” axis of the image</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">verticals</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">):</span><span class="c1"># of 3504</span>
+    <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span>
+        <span class="p">((</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">232</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">72</span><span class="p">))</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">verticals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Slice no. </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Slice no. 0
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>153</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>154</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>155</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>157</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2505</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2506</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2507</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2508</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2509</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>2330 rows × 3 columns</p>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">~</span>\<span class="n">AppData</span>\<span class="n">Local</span>\<span class="n">Temp</span>\<span class="n">ipykernel_11296</span>\<span class="mf">3441727337.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">):</span><span class="c1"># of 3504</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span>
+<span class="ne">----&gt; </span><span class="mi">4</span>         <span class="p">((</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">232</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">72</span><span class="p">))</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>         <span class="n">verticals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span><span class="mi">1000</span><span class="p">):</span><span class="c1"># of 3504</span>
+    <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span>
+        <span class="p">((</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">232</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">72</span><span class="p">))</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">verticals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Slice no. </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="mi">1500</span><span class="p">):</span><span class="c1"># of 3504</span>
+    <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span>
+        <span class="p">((</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">232</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">72</span><span class="p">))</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">verticals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Slice no. </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1500</span><span class="p">,</span><span class="mi">2000</span><span class="p">):</span><span class="c1"># of 3504</span>
+    <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span>
+        <span class="p">((</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">232</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">72</span><span class="p">))</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">verticals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Slice no. </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span><span class="mi">2500</span><span class="p">):</span><span class="c1"># of 3504</span>
+    <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span>
+        <span class="p">((</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">232</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">72</span><span class="p">))</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">verticals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Slice no. </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Slice no. 2028
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>556</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>557</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>558</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>559</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>560</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2505</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2506</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2507</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2508</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2509</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>1954 rows × 3 columns</p>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Slice no. 2328
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>153</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>154</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>155</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>157</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>524</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>525</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>526</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>527</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>528</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>376 rows × 3 columns</p>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Slice no. 2362
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>960</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2500</span><span class="p">,</span><span class="mi">3000</span><span class="p">):</span><span class="c1"># of 3504</span>
+    <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span>
+        <span class="p">((</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">232</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">72</span><span class="p">))</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">verticals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Slice no. </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span><span class="mi">3504</span><span class="p">):</span><span class="c1"># of 3504</span>
+    <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span>
+        <span class="p">((</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">232</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">72</span><span class="p">))</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">verticals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Slice no. </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)[</span><span class="n">i</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Slice no. 3461
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>960</th>
+      <td>72</td>
+      <td>232</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">verticals</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0, 2028, 2328, 2362, 3461]
+</pre></div>
+</div>
 </div>
 </div>
 </section>
@@ -1984,6 +2479,7 @@ True
 <li><p><a class="reference external" href="https://stackoverflow.com/questions/15589517/how-to-crop-an-image-in-opencv-using-python">https://stackoverflow.com/questions/15589517/how-to-crop-an-image-in-opencv-using-python</a></p></li>
 <li><p><a class="reference external" href="https://stackoverflow.com/questions/50624389/how-to-group-list-of-tuples">https://stackoverflow.com/questions/50624389/how-to-group-list-of-tuples</a></p></li>
 <li><p><a class="reference external" href="https://scikit-image.org/skimage-tutorials/lectures/00_images_are_arrays.html">https://scikit-image.org/skimage-tutorials/lectures/00_images_are_arrays.html</a></p></li>
+<li><p><a class="reference external" href="https://www.statology.org/pandas-loc-multiple-conditions/">https://www.statology.org/pandas-loc-multiple-conditions/</a></p></li>
 </ul>
 </section>
 </section>
