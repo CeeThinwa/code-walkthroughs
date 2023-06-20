@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Kenyans in Print &#8212; Code Walkthroughs</title>
+    <title>Text Recognition &#8212; Code Walkthroughs</title>
   
   
   
@@ -62,12 +62,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'kenyans-in-print/kip-intro';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'kenyans-in-print/kip-pg3';</script>
     <link rel="shortcut icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Image block segmentation: Part I" href="kip-pg1.html" />
-    <link rel="prev" title="Welcome to Code Walkthroughs" href="../intro.html" />
+    <link rel="prev" title="Image block segmentation: Part II" href="kip-pg2.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -159,10 +158,10 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Kenyans in Print</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="kip-intro.html">Kenyans in Print</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="kip-pg1.html">Image block segmentation: Part I</a></li>
 <li class="toctree-l2"><a class="reference internal" href="kip-pg2.html">Image block segmentation: Part II</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kip-pg3.html">Text Recognition</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Text Recognition</a></li>
 </ul>
 </li>
 </ul>
@@ -211,6 +210,55 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/ceethinwa/code-walkthroughs/main?urlpath=tree/book/kenyans-in-print/kip-pg3.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="initThebeSBT()"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="btn__text-container">Live Code</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
 <div class="dropdown dropdown-download-buttons">
   <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
     <i class="fas fa-download"></i>
@@ -219,7 +267,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../_sources/kenyans-in-print/kip-intro.md" target="_blank"
+      <li><a href="../_sources/kenyans-in-print/kip-pg3.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -229,7 +277,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.md</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
 </li>
       
@@ -288,9 +336,7 @@ document.write(`
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</label>
+
 </div></div>
       
     </div>
@@ -301,23 +347,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Kenyans in Print</h1>
+    <h1>Text Recognition</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vision">Vision</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem">Problem</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mission">Mission</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#potential-audience">Potential Audience</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-sections">Project Sections</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -327,48 +361,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="kenyans-in-print">
-<h1>Kenyans in Print<a class="headerlink" href="#kenyans-in-print" title="Permalink to this heading">#</a></h1>
- <video width="100%" height="100%" controls>
-  <source src="https://ceethinwa.github.io/resources/vid/Kenyans%20in%20Print.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-<section id="vision">
-<h2>Vision<a class="headerlink" href="#vision" title="Permalink to this heading">#</a></h2>
-<p>To make news articles searchable and shine the spotlight on more human interest stories from interesting Kenyans from all walks of life.</p>
-</section>
-<section id="problem">
-<h2>Problem<a class="headerlink" href="#problem" title="Permalink to this heading">#</a></h2>
-<p>Diverse portraits of everyday Kenyans tend to be buried under the celebrity and influencer culture dominating Kenyan online blogs and Kenyan YouTube channels. However, print media in Kenya still has a good amount of human interest stories. However, these stories are shown as scanned flipbooks, which can be hard to search through. Having them in this format also means that you can’t cluster different articles around human interest topics like entrepreneurship, cuisine, family etc.</p>
-</section>
-<section id="mission">
-<h2>Mission<a class="headerlink" href="#mission" title="Permalink to this heading">#</a></h2>
-<p>Provide a solution from scanned newspaper articles that allows the most relevant human interest stories to be categorized by authors and human interest topics.</p>
-</section>
-<section id="potential-audience">
-<h2>Potential Audience<a class="headerlink" href="#potential-audience" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Writers working for Kenyan media houses.</p></li>
-<li><p>Curious Kenyans seeking to learn about other Kenyans.</p></li>
-</ul>
-</section>
-<section id="project-sections">
-<h2>Project Sections<a class="headerlink" href="#project-sections" title="Permalink to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p><strong>Image Annotation</strong><br>
-This project began with looking at the scanned images (which passed through a max A3 printer).
-Image segmentation was tackled in 2 parts:<br>
-i.    <a class="reference internal" href="kip-pg1.html"><span class="doc std std-doc">Image Annotation I</span></a><br>
-ii.   <a class="reference internal" href="kip-pg2.html"><span class="doc std std-doc">Image Annotation II</span></a></p></li>
-<li><p><strong>Text Recognition</strong><br>
-Based on the research done on programmatic image segmentation, the end decision was to segment the articles manually.<br>
-This was tackled here: <a class="reference internal" href="kip-pg3.html"><span class="doc std std-doc">Text Recognition</span></a></p></li>
-<li><p><strong>Article Searchability</strong></p></li>
-<li><p><strong>Front-end Development</strong></p></li>
-</ol>
-</section>
-<div class="toctree-wrapper compound">
-</div>
+  <section class="tex2jax_ignore mathjax_ignore" id="text-recognition">
+<h1>Text Recognition<a class="headerlink" href="#text-recognition" title="Permalink to this heading">#</a></h1>
 </section>
 
     <script type="text/x-thebe-config">
@@ -400,22 +394,13 @@ This was tackled here: <a class="reference internal" href="kip-pg3.html"><span c
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../intro.html"
+       href="kip-pg2.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Welcome to Code Walkthroughs</p>
+        <p class="prev-next-title">Image block segmentation: Part II</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="kip-pg1.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Image block segmentation: Part I</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -423,24 +408,6 @@ This was tackled here: <a class="reference internal" href="kip-pg3.html"><span c
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vision">Vision</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem">Problem</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mission">Mission</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#potential-audience">Potential Audience</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-sections">Project Sections</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

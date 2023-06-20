@@ -29,6 +29,8 @@ This project began with looking at the scanned images (which passed through a ma
 Image segmentation was tackled in 2 parts:<br>
    i. &nbsp;&nbsp; [Image Annotation I](./kip-pg1.ipynb)<br>
    ii. &nbsp; [Image Annotation II](./kip-pg2.ipynb)
-2. **Text Recognition**
+2. **Text Recognition**<br>
+Based on the research done on programmatic image segmentation, the end decision was to segment the articles manually.<br>
+This was tackled here: [Text Recognition](./kip-pg3.ipynb)
 3. **Article Searchability**
 4. **Front-end Development**
