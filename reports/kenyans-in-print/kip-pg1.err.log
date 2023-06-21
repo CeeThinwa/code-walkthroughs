@@ -32,9 +32,9 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-x, y = mask.shape
-
-value = max(math.ceil(x/100),math.ceil(y/100))+20 #heuristic
-mask = rlsa.rlsa(mask, False, True, value) #rlsa application with rlsa vertical - "reads" the content top to bottom
+!pip install Pillow
+!pip install numpy
+!pip install pythonRLSA
+!pip install opencv-python-headless
 -------------------
 

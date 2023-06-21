@@ -162,6 +162,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="kip-pg1.html">Image block segmentation: Part I</a></li>
 <li class="toctree-l2"><a class="reference internal" href="kip-pg2.html">Image block segmentation: Part II</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Text Recognition</a></li>
+
 </ul>
 </li>
 </ul>
@@ -336,7 +337,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -352,6 +355,19 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Text Recognition</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-on-server-cpu-for-tesseract">Installation on Server/CPU for Tesseract</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -363,6 +379,130 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="text-recognition">
 <h1>Text Recognition<a class="headerlink" href="#text-recognition" title="Permalink to this heading">#</a></h1>
+<p>Based on my research around segmentation, manual cropping of images is the way to go. Therefore, using the same image in the series, it was manually split as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>Pillow
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>numpy
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>opencv-python-headless
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pytesseract
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: Pillow in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (9.5.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (1.21.6)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: opencv-python-headless in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (4.7.0.72)
+Requirement already satisfied: numpy&gt;=1.17.0 in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (from opencv-python-headless) (1.21.6)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytesseract in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (0.3.10)
+Requirement already satisfied: packaging&gt;=21.3 in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (from pytesseract) (23.0)
+Requirement already satisfied: Pillow&gt;=8.0.0 in c:\users\ct\documents\github\code-walkthroughs\venv\lib\site-packages (from pytesseract) (9.5.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span> <span class="c1"># Pillow package</span>
+<span class="kn">import</span> <span class="nn">cv2</span> <span class="c1"># Open CV package</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> <span class="c1"># Numpy package</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">photo</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">sample_image_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;./kip-images/part</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.jpg&quot;</span>
+        <span class="n">photo</span><span class="p">[</span><span class="n">sample_image_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)</span>
+
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">sample_image_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/home/jovyan/book/kenyans-in-print/kip-images/part</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.jpg&quot;</span>
+        <span class="n">photo</span><span class="p">[</span><span class="n">sample_image_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">sample_image_path</span><span class="p">)</span>
+
+
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">photo</span><span class="p">:</span>
+    <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">photo</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">photo</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+        <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="o">*</span><span class="mf">0.2</span><span class="p">))</span>
+    <span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/101742ac351790759350ac46a2b927af4c23bb998e11adbe462804944bb9eb46.png" src="../_images/101742ac351790759350ac46a2b927af4c23bb998e11adbe462804944bb9eb46.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<img alt="../_images/8b5ae71275e7ebbaf11484bc4e6782ee5177048834bc07dffd393c0e8e96c4cc.png" src="../_images/8b5ae71275e7ebbaf11484bc4e6782ee5177048834bc07dffd393c0e8e96c4cc.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<img alt="../_images/e8616f33fc36888002d9bf8af79c60095ceee4ce80958998ea858185f241df7b.png" src="../_images/e8616f33fc36888002d9bf8af79c60095ceee4ce80958998ea858185f241df7b.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<img alt="../_images/0fd0747b095d2f50e9d5961a2ac3752251c75fc2d7f7c9e98dfa63c4489f147a.png" src="../_images/0fd0747b095d2f50e9d5961a2ac3752251c75fc2d7f7c9e98dfa63c4489f147a.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<img alt="../_images/d82a66a054df73cee031d928bf8abf62aad33d87f75e2c0f02f501259ae3a2c9.png" src="../_images/d82a66a054df73cee031d928bf8abf62aad33d87f75e2c0f02f501259ae3a2c9.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<img alt="../_images/2d3528b45cac36c7eff8d7e5c4afebcb04272ce02092ce032116bfd314414a10.png" src="../_images/2d3528b45cac36c7eff8d7e5c4afebcb04272ce02092ce032116bfd314414a10.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Text recognition, especially for print involves use of optical character recognition; <a class="reference external" href="https://github.com/tesseract-ocr/tesseract">Tessaract</a> is an open-source OCR (Optical Character Recognition) software.</p>
+<section id="installation-on-server-cpu-for-tesseract">
+<h2>Installation on Server/CPU for Tesseract<a class="headerlink" href="#installation-on-server-cpu-for-tesseract" title="Permalink to this heading">#</a></h2>
+<p>The first step is to install Tessaract on your OS…</p>
+<p>In my case, I:</p>
+<ul class="simple">
+<li><p>installed <a class="reference external" href="https://github.com/UB-Mannheim/tesseract/wiki"><em>Tessaract 5.0</em> for Windows</a> using <a class="reference external" href="https://medium.com/quantrium-tech/installing-and-using-tesseract-4-on-windows-10-4f7930313f82">this guide</a> to work locally, and</p></li>
+<li><p>installed it in the cloud by running</p>
+<ul>
+<li><p>the following command on Google Colab (Ubuntu): <code class="docutils literal notranslate"><span class="pre">!sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">tesseract-ocr</span></code></p></li>
+<li><p>the following commands on Deepnote (Debian) terminal: <code class="docutils literal notranslate"><span class="pre">!sudo</span> <span class="pre">apt-get</span> <span class="pre">update</span></code> and then <code class="docutils literal notranslate"><span class="pre">!sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">tesseract-ocr</span> <span class="pre">-y</span></code></p></li>
+</ul>
+</li>
+</ul>
+<p><em>N/B: For each session in the cloud, run the Tesseract installation commands in the cell/terminal.</em></p>
+<p>Python Tesseract wrappers for <em>Tesseract 4.0x</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tesserocr</span></code> - A Python wrapper around Tesseract’s C++ API (however, it does not work with <em>Tesseract 5.0</em>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pytesseract</span></code> - a wrapper class for Tesseract OCR (requires tesseract executable)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tesseract-ocr-wrapper</span></code> - a python wrapper for tesseract-ocr with support for OCRing of pdf</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">aiopytesseract</span></code> - asyncio tesseract wrapper for Tesseract-OCR.</p></li>
+</ul>
+<blockquote>
+<div><p><em>In python there are two most popular options: <code class="docutils literal notranslate"><span class="pre">PyTesseract</span></code> and <code class="docutils literal notranslate"><span class="pre">Tesserocr</span></code>.</em>
+<em><code class="docutils literal notranslate"><span class="pre">Tesserocr</span></code> is a python wrapper around the Tesseract C++ API. On the other hand, <code class="docutils literal notranslate"><span class="pre">PyTesseract</span></code> is a wrapper for the tesseract-ocr CLI program.</em>
+<em>And as you can guess <code class="docutils literal notranslate"><span class="pre">Tesserocr</span></code> gives a lot more flexibility and control over tesseract. <code class="docutils literal notranslate"><span class="pre">Tesserocr</span></code> has multi-processing capabilities</em>
+<em>which are much faster in actual practise as compared to <code class="docutils literal notranslate"><span class="pre">PyTesseract</span></code>.</em><br>
+ - Analytics Vidhya</p>
+</div></blockquote>
+<p>Once the tesseract engine is up and running, you can install <code class="docutils literal notranslate"><span class="pre">PyTesseract</span></code> with the following code: <code class="docutils literal notranslate"><span class="pre">!pip</span> <span class="pre">install</span> <span class="pre">pytesseract</span></code></p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://projectgurukul.org/python-text-detection-extraction-opencv-ocr/">https://projectgurukul.org/python-text-detection-extraction-opencv-ocr/</a></p></li>
+</ul>
 </section>
 
     <script type="text/x-thebe-config">
@@ -408,6 +548,25 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Text Recognition</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-on-server-cpu-for-tesseract">Installation on Server/CPU for Tesseract</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>
