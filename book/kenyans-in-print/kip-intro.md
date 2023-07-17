@@ -32,5 +32,6 @@ Image segmentation was tackled in 2 parts:<br>
 2. **Text Recognition**<br>
 Based on the research done on programmatic image segmentation, the end decision was to segment the articles manually.<br>
 This was tackled here: [Text Recognition](./kip-pg3.ipynb)
-3. **Article Searchability**
+3. **Article Searchability**<br>
+The first step was to get the app design right and test my logic with pseudocode here: [App Design](./app-design.md)
 4. **Front-end Development**
